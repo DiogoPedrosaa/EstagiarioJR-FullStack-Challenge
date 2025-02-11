@@ -75,6 +75,22 @@ def list_employees(request):
     return Response(serializer.data)
 
 
+
+@swagger_auto_schema(
+        method='get',
+        responses={200: openapi.Response("Detalhes do funcionário"), 404: "Funcionário não encontrado"}
+    )
+@api_view(['GET'])
+@permission_classes([AllowAny])
+def get_employee(request, pk):
+    try:
+        employee = Employee.objects.get(pk=pk)
+        serializer = EmployeeSerializer(employee)
+        return Response(serializer.data)
+    except Employee.DoesNotExist:
+        return Response({'error': 'Funcionário não encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+
 @swagger_auto_schema(
     method='post',
     request_body=EmployeeSerializer,
@@ -132,6 +148,14 @@ def list_departments(request):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_department(request, pk):
+    department = Department.objects.get(pk=pk)
+    serializer = DepartmentSerializer(department)
+    return Response(serializer.data)
+
+
 
 @swagger_auto_schema(
     method='post',
@@ -146,5 +170,37 @@ def create_department(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@swagger_auto_schema(
+    method='delete',
+    responses={204: openapi.Response("Setor deletado com sucesso")}
+)
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_department(request, pk):
+    department = Department.objects.get(pk=pk)
+    department.delete()
+    return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
+@swagger_auto_schema(
+    method='patch',
+    request_body=DepartmentSerializer,
+    responses={200: openapi.Response("Setor atualizado com sucesso"), 400: "Erro de validação"}
+)
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def update_department(request, pk):
+    department = Department.objects.get(pk=pk)
+    serializer = DepartmentSerializer(department, data=request.data, partial=True)
+    if serializer.is_valid():
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
 
 
