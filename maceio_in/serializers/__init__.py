@@ -1,1 +1,3 @@
 from .auth_serializers import RegisterSerializer, LoginSerializer
+from .employee_serializers import EmployeeSerializer
+from .department_serializers import DepartmentSerializer
