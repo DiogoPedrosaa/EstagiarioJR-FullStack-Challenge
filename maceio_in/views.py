@@ -9,9 +9,15 @@ from .serializers import RegisterSerializer, LoginSerializer
 from django.core.exceptions import ObjectDoesNotExist
 from maceio_in.models import Employee, Department
 from .serializers import EmployeeSerializer, DepartmentSerializer
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
-
+@swagger_auto_schema(
+    method='post',
+    request_body=RegisterSerializer,
+    responses={201: openapi.Response("Usuário registrado com sucesso!"), 400: "Erro de validação"}
+)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register_user(request):
@@ -22,6 +28,12 @@ def register_user(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+@swagger_auto_schema(
+    method='post',
+    request_body=LoginSerializer,
+    responses={200: openapi.Response("Login realizado com sucesso!"), 400: "Credenciais Incorretas"}
+)
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def login_user(request):
@@ -34,6 +46,12 @@ def login_user(request):
     return Response({'error': 'Credenciais Incorretas'}, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+
+@swagger_auto_schema(
+    method='post',
+    responses={200: openapi.Response("Você foi deslogado com sucesso!")}
+)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def logout_user(request):
@@ -45,6 +63,10 @@ def logout_user(request):
 
 
 
+@swagger_auto_schema(
+    method='get',
+    responses={200: openapi.Response("Lista de funcionários")}
+)
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def list_employees(request):
@@ -53,6 +75,11 @@ def list_employees(request):
     return Response(serializer.data)
 
 
+@swagger_auto_schema(
+    method='post',
+    request_body=EmployeeSerializer,
+    responses={201: openapi.Response("Funcionário criado com sucesso"), 400: "Erro de validação"}
+)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_employee(request):
@@ -63,6 +90,11 @@ def create_employee(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+@swagger_auto_schema(
+    method='delete',
+    responses={204: openapi.Response("Funcionário deletado com sucesso")}
+)
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_employee(request, pk):
@@ -71,6 +103,12 @@ def delete_employee(request, pk):
     return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+
+@swagger_auto_schema(
+    method='put',
+    request_body=EmployeeSerializer,
+    responses={200: openapi.Response("Funcionário atualizado com sucesso"), 400: "Erro de validação"}
+)
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def update_employee(request, pk):
@@ -82,6 +120,10 @@ def update_employee(request, pk):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@swagger_auto_schema(
+    method='get',
+    responses={200: openapi.Response("Lista de setores")}
+)
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def list_departments(request):
@@ -89,6 +131,13 @@ def list_departments(request):
     serializer = DepartmentSerializer(departments, many=True)
     return Response(serializer.data)
 
+
+
+@swagger_auto_schema(
+    method='post',
+    request_body=DepartmentSerializer,
+    responses={201: openapi.Response("Setor criado com sucesso"), 400: "Erro de validação"}
+)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated]) 
 def create_department(request):
@@ -97,3 +146,5 @@ def create_department(request):
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+

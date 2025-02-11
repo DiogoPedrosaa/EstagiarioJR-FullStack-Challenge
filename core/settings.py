@@ -30,7 +30,7 @@ SECRET_KEY = config('SECRET_KEY')
 # DEBUG está guardado no arquivo .env por questões de segurança.
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -85,17 +85,11 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 
 # Os dados do banco se encontram no arquivo .env, por questões de segurança
+import os
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'OPTIONS': {
-            'options': '-c client_encoding=UTF8',
-        },
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT', default='5432'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  
     }
 }
 
