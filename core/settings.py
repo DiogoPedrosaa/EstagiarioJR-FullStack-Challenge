@@ -58,6 +58,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -94,6 +95,7 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 # Os dados do banco se encontram no arquivo .env, por questões de segurança
 import os
+from datetime import timedelta
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -149,3 +151,12 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+
+
