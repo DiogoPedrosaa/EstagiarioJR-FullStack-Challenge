@@ -95,7 +95,6 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 # Os dados do banco se encontram no arquivo .env, por questões de segurança
 import os
-from datetime import timedelta
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -151,8 +150,9 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
+from datetime import timedelta
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=20),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=40),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
 

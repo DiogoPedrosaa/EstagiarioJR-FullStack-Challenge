@@ -70,7 +70,7 @@ def logout_user(request):
 @api_view(['GET'])
 @permission_classes([AllowAny])
 def list_employees(request):
-    employees = Employee.objects.all()
+    employees = Employee.objects.select_related('department')  
     serializer = EmployeeSerializer(employees, many=True)
     return Response(serializer.data)
 
