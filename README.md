@@ -27,20 +27,19 @@ Clone o projeto
   git clone https://github.com/DiogoPedrosaa/EstagiarioJR-FullStack-Challenge
 ```
 
-Crie um ambiente virtual na raiz do projeto
+Ative os scripts do ambient virtual na raiz do projeto
 
 ```bash
-python -m venv venv
-source venv/bin/activate  # No Windows, use venv\Scripts\activate
+cd Venv
+source venv/bin/activate  # No Windows, use Scripts\activate
 ```
 
-Instale as dependências
+Instale as dependências do projeto (se necessario) 
 
 ```bash
   pip install -r requirements.txt
 ```
 
-Configure as variáveis de ambiente: Renomeie o arquivo .env.example para .env e ajuste as configurações conforme necessário.
 
 Execute as migrações do banco de dados:
 
