@@ -48,10 +48,10 @@ Execute as migrações do banco de dados:
   python manage.py migrate
 ```
 
-Inicie o servidor (preferencia na porta 80 já que o front está configurado para consumir os dados dessa porta.)
+Inicie o servidor (preferencia na porta 8080 já que o front está configurado para consumir os dados dessa porta.)
 
 ```bash
-  python manage.py runserver localhost:80
+  python manage.py runserver localhost:8080
 ```
 
 
